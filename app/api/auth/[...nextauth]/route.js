@@ -14,6 +14,9 @@ const prisma = new PrismaClient({ adapter });
 const USERS = [
   { id: '1', name: 'Sandra Nakata', email: 'sandra.nakata092@gmail.com', password: '123', role: 'diretora', image: '/sandra.jpg' },
   { id: '2', name: 'Leonardo', email: 'leonardogmendoza@gmail.com', password: '123', role: 'diretora', image: '/leonardo.jpg' },
+  { id: '3', name: 'Bispo', email: 'bispo', password: '123456', role: 'diretora', image: '/bispado-logo.jpg' },
+  { id: '4', name: 'Vicente', email: 'vicente', password: '123456', role: 'diretora', image: '/bispado-logo.jpg' },
+  { id: '5', name: 'Almir', email: 'almir', password: '123456', role: 'diretora', image: '/bispado-logo.jpg' },
 ];
 
 export const authOptions = {

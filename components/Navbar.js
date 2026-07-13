@@ -29,7 +29,6 @@ export default function Navbar() {
             <li><Link href="#">Servir</Link></li>
             <li><Link href="#">Notícias</Link></li>
             <li><Link href="#">Sobre nós</Link></li>
-            <li><Link href="/dashboard" className={styles.controleLink}>controle bispo</Link></li>
           </ul>
 
           <div className={styles.rightMenu}>
@@ -55,7 +54,6 @@ export default function Navbar() {
             <li><Link href="#" onClick={() => setIsOpen(false)}>Servir</Link></li>
             <li><Link href="#" onClick={() => setIsOpen(false)}>Notícias</Link></li>
             <li><Link href="#" onClick={() => setIsOpen(false)}>Sobre nós</Link></li>
-            <li><Link href="/dashboard" onClick={() => setIsOpen(false)} style={{fontWeight: 'bold', color: '#005c8a'}}>controle bispo</Link></li>
           </ul>
         </div>
       )}

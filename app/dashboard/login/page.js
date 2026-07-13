@@ -42,8 +42,8 @@ export default function LoginPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/bispado-logo.jpg" alt="Bispado" className={styles.logoImg} />
           <div>
-            <div className={styles.logoName}>BISPADO</div>
-            <div className={styles.logoSub}>HOME CARE — Painel de Gestão</div>
+            <div className={styles.logoName}>CONTROLE DO BISPADO</div>
+            <div className={styles.logoSub}>Acesso à Gestão</div>
           </div>
         </div>
 
@@ -52,11 +52,11 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>
-            <label className={styles.label}>Email</label>
+            <label className={styles.label}>Usuário ou Email</label>
             <input
-              type="email"
+              type="text"
               className={styles.input}
-              placeholder="seu@email.com"
+              placeholder="bispo ou seu@email.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required

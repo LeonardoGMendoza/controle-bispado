@@ -7,8 +7,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Bispado Home Care | Cuidamos de vidas, acolhemos histórias",
-  description: "Atendimento Domiciliar Especializado para Crianças, Idosos e Pessoas com Necessidades Especiais. Plantões 12h, 24h e Cuidados Paliativos.",
+  title: "Controle do Bispado | Painel de Gestão",
+  description: "Sistema oficial para gestão de atividades do bispado, incluindo Notas Fiscais, Missão, Rapazes e Moças.",
   icons: {
     icon: "/bispado-logo.jpg",
   },

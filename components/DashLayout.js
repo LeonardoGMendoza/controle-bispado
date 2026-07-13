@@ -15,11 +15,14 @@ export default function DashLayout({ children }) {
   const isEquipe = ['cuidador', 'tecnico', 'enfermeira'].includes(session?.user?.role);
 
   const allowedNavItems = [
-    { href: '/dashboard', icon: '📊', label: 'Visão Geral' },
-    { href: '/dashboard/notas-fiscais', icon: '🧾', label: 'Notas Fiscais' },
-    { href: '/dashboard/missao', icon: '🗺️', label: 'Missão' },
+    { href: '/dashboard', icon: '📈', label: 'Visão Geral' },
+    { href: '/dashboard/notas-fiscais', icon: '📄', label: 'Notas Fiscais' },
+    { href: '/dashboard/missao', icon: '🌍', label: 'Missão' },
     { href: '/dashboard/rapazes', icon: '👨', label: 'Rapazes' },
     { href: '/dashboard/mocas', icon: '👩', label: 'Moças' },
+    { href: '/dashboard/compras', icon: '🛒', label: 'Compras' },
+    { href: '/dashboard/visitas', icon: '🚪', label: 'Visitas' },
+    { href: '/dashboard/entrevistas', icon: '🤝', label: 'Entrevistas' },
   ];
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function DashLayout({ children }) {
           <img src="/bispado-logo.jpg" alt="Bispado" className={styles.sidebarLogo} />
           {sidebarOpen && (
             <div>
-              <div className={styles.sidebarName}>BISPADOHOME</div>
+              <div className={styles.sidebarName}>CONTROLE BISPADO</div>
               <div className={styles.sidebarSub}>Painel de Gestão</div>
             </div>
           )}
