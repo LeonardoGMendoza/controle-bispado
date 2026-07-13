@@ -5,47 +5,58 @@ import styles from '../styles/Navbar.module.css';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const waLink = "https://wa.me/5511989553812?text=Olá!%20Vim%20pelo%20site%20da%20Bispado%20e%20gostaria%20de%20mais%20informações.";
 
   return (
     <header className={styles.header}>
-      <div className={`container ${styles.nav}`}>
-        <Link href="/" className={styles.logo}>
-          <img src="/bispado-logo.jpg" alt="Bispado" />
-          BISPADO <span>HOME CARE</span>
-        </Link>
+      <div className={styles.navTop}>
+        <div className={styles.navContainer}>
+          <Link href="/" className={styles.logoArea}>
+            <div className={styles.logoSquare}>
+              {/* Simulate the Christus logo with a simple icon or text */}
+              <span style={{color: 'white', fontSize: '20px'}}>⛪</span>
+            </div>
+            <div className={styles.logoText}>
+              <span className={styles.logoTitle}>A IGREJA DE</span>
+              <span className={styles.logoTitle}>JESUS CRISTO</span>
+              <span className={styles.logoSub}>DOS SANTOS</span>
+              <span className={styles.logoSub}>DOS ÚLTIMOS DIAS</span>
+            </div>
+          </Link>
 
-        <ul className={styles.menu}>
-          <li><Link href="#sobre">Sobre</Link></li>
-          <li><Link href="#servicos">Serviços</Link></li>
-          <li><Link href="#planos">Planos</Link></li>
-          <li><Link href="#parceria">Parceria</Link></li>
-          <li><Link href="#redes">Redes Sociais</Link></li>
-          <li><Link href="#contato">Contato</Link></li>
-        </ul>
+          <ul className={styles.menu}>
+            <li><Link href="#">Minha Página</Link></li>
+            <li><Link href="#">Bibliotecas</Link></li>
+            <li><Link href="#">Servir</Link></li>
+            <li><Link href="#">Notícias</Link></li>
+            <li><Link href="#">Sobre nós</Link></li>
+            <li><Link href="/dashboard" className={styles.controleLink}>controle bispo</Link></li>
+          </ul>
 
-        <Link href={waLink} target="_blank" className={styles.contactBtn}>
-          💬 WhatsApp
-        </Link>
+          <div className={styles.rightMenu}>
+            <span className={styles.icon}>🔍</span>
+            <span className={styles.icon}>🌐</span>
+            <span className={styles.icon}>⋮⋮</span>
+            <Link href="/dashboard/login" className={styles.btnEntrar}>
+              👤 Entrar
+            </Link>
+          </div>
 
-        <button className={styles.mobileBtn} onClick={() => setIsOpen(!isOpen)} aria-label="Menu">
-          {isOpen ? '✕' : '☰'}
-        </button>
+          <button className={styles.mobileBtn} onClick={() => setIsOpen(!isOpen)} aria-label="Menu">
+            {isOpen ? '✖' : '☰'}
+          </button>
+        </div>
       </div>
 
       {isOpen && (
         <div className={styles.mobileDropdown}>
           <ul>
-            <li><Link href="#sobre" onClick={() => setIsOpen(false)}>Sobre</Link></li>
-            <li><Link href="#servicos" onClick={() => setIsOpen(false)}>Serviços</Link></li>
-            <li><Link href="#planos" onClick={() => setIsOpen(false)}>Planos</Link></li>
-            <li><Link href="#parceria" onClick={() => setIsOpen(false)}>Parceria</Link></li>
-            <li><Link href="#redes" onClick={() => setIsOpen(false)}>Redes Sociais</Link></li>
-            <li><Link href="#contato" onClick={() => setIsOpen(false)}>Contato</Link></li>
+            <li><Link href="#" onClick={() => setIsOpen(false)}>Minha Página</Link></li>
+            <li><Link href="#" onClick={() => setIsOpen(false)}>Bibliotecas</Link></li>
+            <li><Link href="#" onClick={() => setIsOpen(false)}>Servir</Link></li>
+            <li><Link href="#" onClick={() => setIsOpen(false)}>Notícias</Link></li>
+            <li><Link href="#" onClick={() => setIsOpen(false)}>Sobre nós</Link></li>
+            <li><Link href="/dashboard" onClick={() => setIsOpen(false)} style={{fontWeight: 'bold', color: '#005c8a'}}>controle bispo</Link></li>
           </ul>
-          <Link href={waLink} target="_blank" className={styles.mobileWa} onClick={() => setIsOpen(false)}>
-            💬 Falar no WhatsApp
-          </Link>
         </div>
       )}
     </header>

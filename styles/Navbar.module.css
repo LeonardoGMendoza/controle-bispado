@@ -1,53 +1,156 @@
-/* ================== NAVBAR ================== */
 .header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(217,79,138,0.12);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1000;
+  border-bottom: 1px solid #ddd;
+  font-family: Arial, sans-serif;
 }
-.nav {
-  display: flex; justify-content: space-between; align-items: center;
-  height: 72px;
+
+.navTop {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
-.logo { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
-.logo img { height: 38px; width: 38px; border-radius: 50%; object-fit: cover; }
-.logo span { color: var(--pink); }
 
-.menu { display: flex; gap: 32px; list-style: none; }
-.menu a { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
-.menu a:hover { color: var(--pink); }
+.navContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 20px;
+  height: 80px;
+}
 
-.contactBtn {
-  background: var(--brand-gradient);
+.logoArea {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 12px;
+}
+
+.logoSquare {
+  width: 48px;
+  height: 64px;
+  background-color: #005c8a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  color: #333;
+}
+
+.logoTitle {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.logoSub {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 0.5px;
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.menu li a:hover {
+  color: #005c8a;
+}
+
+.controleLink {
+  border: 1px solid #005c8a;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #005c8a !important;
+  font-weight: bold;
+}
+
+.controleLink:hover {
+  background-color: #005c8a;
+  color: white !important;
+}
+
+.rightMenu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon {
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+
+.btnEntrar {
+  background-color: #0077b6;
   color: white;
-  padding: 10px 22px; border-radius: 22px; font-weight: 600; font-size: 0.9rem;
-  box-shadow: 0 4px 12px var(--pink-glow);
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
 }
-.contactBtn:hover { opacity: 0.9; }
 
-.mobileBtn { display: none; font-size: 1.6rem; color: var(--text-primary); }
+.btnEntrar:hover {
+  background-color: #005c8a;
+}
+
+.mobileBtn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
 
 .mobileDropdown {
-  background: rgba(255,255,255,0.97);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(217,79,138,0.12);
-  padding: 20px 24px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-.mobileDropdown ul { list-style: none; display: flex; flex-direction: column; gap: 18px; }
-.mobileDropdown a { color: var(--text-secondary); font-weight: 500; font-size: 15px; }
-.mobileDropdown a:hover { color: var(--text-primary); }
-.mobileWa {
-  margin-top: 16px;
-  display: block; text-align: center;
-  background: var(--wa-green); color: white;
-  padding: 12px; border-radius: 12px; font-weight: 600;
+  background: white;
+  border-top: 1px solid #ddd;
+  padding: 20px;
 }
 
-@media (max-width: 768px) {
-  .menu { display: none; }
-  .contactBtn { display: none; }
-  .mobileBtn { display: block; }
+.mobileDropdown ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobileDropdown a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+  .menu {
+    display: none;
+  }
+  .rightMenu {
+    display: none;
+  }
+  .mobileBtn {
+    display: block;
+    margin-left: auto;
+  }
 }
