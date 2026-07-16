@@ -1,0 +1,91 @@
+{
+  "name": "Bispado - Aniversários Automáticos",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "name": "Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [ 250, 300 ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT nome, \"dataNascimento\", telefone FROM \"Jovem\" WHERE DATE_PART('month', \"dataNascimento\") = DATE_PART('month', CURRENT_DATE) AND DATE_PART('day', \"dataNascimento\") = DATE_PART('day', CURRENT_DATE) AND telefone IS NOT NULL;"
+      },
+      "name": "Postgres: Buscar Aniversariantes do Dia",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [ 450, 300 ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://187.77.32.137:8102/api/sendText",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $json.telefone.replace(/\\D/g, '') }}@c.us"
+            },
+            {
+              "name": "text",
+              "value": "=Bom dia, {{ $json.nome }}! O Bispado quer te desejar um Feliz Aniversário! Que o Senhor te abençoe ricamente hoje e sempre! 🎉🎂"
+            },
+            {
+              "name": "session",
+              "value": "default"
+            }
+          ]
+        }
+      },
+      "name": "Enviar WhatsApp (WAHA)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [ 650, 300 ]
+    }
+  ],
+  "connections": {
+    "Schedule": {
+      "main": [
+        [
+          {
+            "node": "Postgres: Buscar Aniversariantes do Dia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres: Buscar Aniversariantes do Dia": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp (WAHA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

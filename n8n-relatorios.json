@@ -1,0 +1,141 @@
+{
+  "name": "Bispado - Relatório Semanal (Sexta-feira)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 18 * * 5"
+            }
+          ]
+        }
+      },
+      "name": "Sexta às 18h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT nome, \"classeOuQuorum\" FROM \"Jovem\" WHERE cargo ILIKE '%vago%';"
+      },
+      "name": "Buscar Chamados Vagos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        450,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT nome, \"classeOuQuorum\", \"dataUltimaEntrevista\" FROM \"Jovem\" WHERE \"dataUltimaEntrevista\" < CURRENT_DATE - INTERVAL '6 months' OR \"dataUltimaEntrevista\" IS NULL;"
+      },
+      "name": "Buscar Entrevistas Atrasadas",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        450,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const vagos = $items(\"Buscar Chamados Vagos\").map(i => i.json);\nconst atrasadas = $items(\"Buscar Entrevistas Atrasadas\").map(i => i.json);\n\nlet msg = \"*📊 Relatório Semanal do Bispado*\\n\\n\";\n\nmsg += \"*🚨 Chamados Vagos:*\\n\";\nif(vagos.length === 0) msg += \"Tudo preenchido! ✅\\n\";\nvagos.forEach(v => {\n  msg += `- ${v.classeOuQuorum}\\n`;\n});\n\nmsg += \"\\n*🗓️ Entrevistas Vencidas (> 6 meses):*\\n\";\nif(atrasadas.length === 0) msg += \"Tudo em dia! ✅\\n\";\natrasadas.forEach(a => {\n  msg += `- ${a.nome} (${a.classeOuQuorum})\\n`;\n});\n\nmsg += \"\\n_Foque nestes nomes para o conselho de domingo!_\";\n\nreturn [{ json: { mensagem: msg } }];"
+      },
+      "name": "Formatar Mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://187.77.32.137:8102/api/sendText",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "5511999999999@c.us"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.mensagem }}"
+            },
+            {
+              "name": "session",
+              "value": "default"
+            }
+          ]
+        }
+      },
+      "name": "Mandar para o Bispo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        850,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Sexta às 18h": {
+      "main": [
+        [
+          {
+            "node": "Buscar Chamados Vagos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Buscar Entrevistas Atrasadas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Chamados Vagos": {
+      "main": [
+        [
+          {
+            "node": "Formatar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Entrevistas Atrasadas": {
+      "main": [
+        [
+          {
+            "node": "Formatar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -58,3 +58,30 @@ model Jovem {
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
 }
+
+model Membro {
+  id             Int       @id @default(autoincrement())
+  nome           String
+  sexo           String
+  idade          Int?
+  dataNascimento DateTime?
+  telefone       String?
+  email          String?
+  status         String    @default("Ativo")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  entrevistas    Entrevista[]
+}
+
+model Entrevista {
+  id             Int       @id @default(autoincrement())
+  membroId       Int
+  membro         Membro    @relation(fields: [membroId], references: [id])
+  dataHora       DateTime
+  tipo           String    // "Renovação de Recomendação", "Acerto de Dízimo", etc
+  status         String    @default("Agendada") // "Agendada", "Realizada", "Faltou"
+  observacoes    String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
