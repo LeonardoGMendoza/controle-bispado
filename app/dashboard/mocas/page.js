@@ -7,6 +7,8 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
+export const dynamic = 'force-dynamic';
+
 // Ação para salvar a jovem direto no seu banco de dados
 async function adicionarMoca(formData) {
   'use server';
