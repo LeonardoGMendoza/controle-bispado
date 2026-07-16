@@ -44,7 +44,7 @@ export default function Home() {
             color: '#1a1a1a',
             textAlign: 'center'
           }}>
-            Obispado Vila Jacui
+            Bispado da Ala Vila Jacuí
           </h1>
 
           {/* Área da Imagem */}
@@ -62,7 +62,7 @@ export default function Home() {
           }}>
             <img 
               src="/capa.png" 
-              alt="Obispado Vila Jacui" 
+              alt="Bispado da Ala Vila Jacuí" 
               style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
             />
           </div>
