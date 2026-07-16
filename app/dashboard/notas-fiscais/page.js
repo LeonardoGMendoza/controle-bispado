@@ -7,6 +7,7 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 export const dynamic = 'force-dynamic';
+import { uploadAnexo } from './actions';
 
 export default async function NotasFiscaisPage() {
   const notas = await prisma.notaFiscal.findMany({
@@ -26,6 +27,7 @@ export default async function NotasFiscaisPage() {
               <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Descrição</th>
               <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Categoria</th>
               <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Valor</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: '#333' }}>Anexo</th>
               <th style={{ padding: '12px', textAlign: 'center', color: '#333' }}>Status</th>
             </tr>
           </thead>
@@ -51,6 +53,19 @@ export default async function NotasFiscaisPage() {
                   </td>
                   <td style={{ padding: '12px', color: '#005c8a', fontWeight: 'bold' }}>
                     R$ {nota.valor.toFixed(2).replace('.', ',')}
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    {nota.urlAnexo ? (
+                      <a href={nota.urlAnexo} target="_blank" rel="noopener noreferrer" style={{ color: '#005c8a', textDecoration: 'underline', fontSize: '14px', fontWeight: 'bold' }}>
+                        Ver Foto
+                      </a>
+                    ) : (
+                      <form action={uploadAnexo} style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
+                        <input type="hidden" name="notaId" value={nota.id} />
+                        <input type="file" name="file" style={{ fontSize: '10px', width: '120px' }} required />
+                        <button type="submit" style={{ backgroundColor: '#005c8a', color: 'white', border: 'none', borderRadius: '4px', padding: '2px 8px', fontSize: '10px', cursor: 'pointer' }}>Salvar Foto</button>
+                      </form>
+                    )}
                   </td>
                   <td style={{ padding: '12px', textAlign: 'center' }}>
                     <span style={{ 
