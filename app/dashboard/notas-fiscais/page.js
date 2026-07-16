@@ -25,8 +25,8 @@ export default async function NotasFiscaisPage() {
               <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Data</th>
               <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Fornecedor</th>
               <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Descrição</th>
-              <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Categoria</th>
-              <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Valor</th>
+              {/* <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Categoria</th>
+              <th style={{ padding: '12px', textAlign: 'left', color: '#333' }}>Valor</th> */}
               <th style={{ padding: '12px', textAlign: 'center', color: '#333' }}>Anexo</th>
               <th style={{ padding: '12px', textAlign: 'center', color: '#333' }}>Status</th>
             </tr>
@@ -34,7 +34,7 @@ export default async function NotasFiscaisPage() {
           <tbody>
             {notas.length === 0 ? (
               <tr>
-                <td colSpan="6" style={{ padding: '20px', textAlign: 'center', color: '#777' }}>
+                <td colSpan="5" style={{ padding: '20px', textAlign: 'center', color: '#777' }}>
                   Nenhuma nota fiscal registrada ainda.
                 </td>
               </tr>
@@ -46,14 +46,14 @@ export default async function NotasFiscaisPage() {
                   </td>
                   <td style={{ padding: '12px', fontWeight: 'bold' }}>{nota.fornecedor}</td>
                   <td style={{ padding: '12px', color: '#555' }}>{nota.descricao}</td>
-                  <td style={{ padding: '12px' }}>
+                  {/* <td style={{ padding: '12px' }}>
                     <span style={{ backgroundColor: '#e2e8f0', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
                       {nota.categoria || 'Geral'}
                     </span>
                   </td>
                   <td style={{ padding: '12px', color: '#005c8a', fontWeight: 'bold' }}>
                     R$ {nota.valor.toFixed(2).replace('.', ',')}
-                  </td>
+                  </td> */}
                   <td style={{ padding: '12px', textAlign: 'center' }}>
                     {nota.urlAnexo ? (
                       <a href={`/api/foto?url=${encodeURIComponent(nota.urlAnexo)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#005c8a', textDecoration: 'underline', fontSize: '14px', fontWeight: 'bold' }}>
