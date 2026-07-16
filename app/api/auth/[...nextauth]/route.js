@@ -34,15 +34,18 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
         
+        // Remove espaços vazios do final e converte para minúsculas
+        const emailDigitado = credentials.email.trim().toLowerCase();
+        
         // 1. Verificar na lista de diretores fixos
-        const user = USERS.find(u => u.email === credentials.email);
+        const user = USERS.find(u => u.email.toLowerCase() === emailDigitado);
         if (user && credentials.password === user.password) {
           return { id: user.id, name: user.name, email: user.email, role: user.role, image: user.image };
         }
 
         // 2. Verificar no banco de dados (se houver outros com senha)
         const dbUser = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: emailDigitado } // Banco de dados já ignora se estiver configurado certo, mas mandamos minúsculo por segurança
         });
 
         if (dbUser) {
