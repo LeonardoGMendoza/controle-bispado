@@ -9,13 +9,18 @@ const prisma = new PrismaClient({ adapter });
 
 export const dynamic = 'force-dynamic';
 
-// Ação para salvar a jovem direto no seu banco de dados
 async function adicionarMoca(formData) {
   'use server';
   
   const nome = formData.get('nome');
   const telefone = formData.get('telefone');
   const classeOuQuorum = formData.get('classeOuQuorum');
+  const dataNascimentoStr = formData.get('dataNascimento');
+  
+  let dataNascimento = null;
+  if (dataNascimentoStr) {
+    dataNascimento = new Date(`${dataNascimentoStr}T12:00:00Z`);
+  }
   
   await prisma.jovem.create({
     data: {
@@ -23,6 +28,7 @@ async function adicionarMoca(formData) {
       telefone,
       organizacao: 'Moças',
       classeOuQuorum,
+      dataNascimento,
       status: 'Ativo'
     }
   });
@@ -31,7 +37,6 @@ async function adicionarMoca(formData) {
 }
 
 export default async function MocasPage() {
-  // Puxa as jovens do seu banco de dados
   const mocas = await prisma.jovem.findMany({
     where: { organizacao: 'Moças' },
     orderBy: { nome: 'asc' }
@@ -51,7 +56,6 @@ export default async function MocasPage() {
 
       <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-start' }}>
         
-        {/* Formulário de Cadastro */}
         <div style={{ flex: '1', backgroundColor: '#fff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px', color: '#1e293b' }}>Cadastrar Nova Jovem</h2>
           
@@ -64,6 +68,11 @@ export default async function MocasPage() {
             <div>
               <label style={{ display: 'block', fontSize: '14px', fontWeight: 'bold', color: '#475569', marginBottom: '5px' }}>WhatsApp (com DDD)</label>
               <input type="text" name="telefone" required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }} placeholder="Ex: 11999999999" />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: 'bold', color: '#475569', marginBottom: '5px' }}>Data de Nascimento (Para o Robô)</label>
+              <input type="date" name="dataNascimento" required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
             </div>
 
             <div>
@@ -81,7 +90,6 @@ export default async function MocasPage() {
           </form>
         </div>
 
-        {/* Lista que mostra o que está no Banco de Dados */}
         <div style={{ flex: '2', backgroundColor: '#fff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px', color: '#1e293b' }}>Moças Cadastradas ({mocas.length})</h2>
           
@@ -93,7 +101,7 @@ export default async function MocasPage() {
                 <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
                   <th style={{ padding: '12px', borderBottom: '2px solid #e2e8f0' }}>Nome</th>
                   <th style={{ padding: '12px', borderBottom: '2px solid #e2e8f0' }}>Classe</th>
-                  <th style={{ padding: '12px', borderBottom: '2px solid #e2e8f0' }}>WhatsApp</th>
+                  <th style={{ padding: '12px', borderBottom: '2px solid #e2e8f0' }}>Data Nasc.</th>
                 </tr>
               </thead>
               <tbody>
@@ -101,7 +109,9 @@ export default async function MocasPage() {
                   <tr key={moca.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
                     <td style={{ padding: '12px', fontWeight: 'bold' }}>{moca.nome}</td>
                     <td style={{ padding: '12px', color: '#64748b' }}>{moca.classeOuQuorum}</td>
-                    <td style={{ padding: '12px', color: '#64748b' }}>{moca.telefone}</td>
+                    <td style={{ padding: '12px', color: '#64748b' }}>
+                      {moca.dataNascimento ? new Date(moca.dataNascimento).toLocaleDateString('pt-BR') : 'Sem data'}
+                    </td>
                   </tr>
                 ))}
               </tbody>
