@@ -56,7 +56,7 @@ export default async function NotasFiscaisPage() {
                   </td>
                   <td style={{ padding: '12px', textAlign: 'center' }}>
                     {nota.urlAnexo ? (
-                      <a href={nota.urlAnexo} target="_blank" rel="noopener noreferrer" style={{ color: '#005c8a', textDecoration: 'underline', fontSize: '14px', fontWeight: 'bold' }}>
+                      <a href={`/api/foto?url=${encodeURIComponent(nota.urlAnexo)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#005c8a', textDecoration: 'underline', fontSize: '14px', fontWeight: 'bold' }}>
                         Ver Foto
                       </a>
                     ) : (
