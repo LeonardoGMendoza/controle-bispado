@@ -60,10 +60,9 @@ export default function Home() {
             alignItems: 'center',
             minHeight: '350px'
           }}>
-            {/* Aqui vai a foto oficial do Bispado */}
-            {/* Substitua 'equipe.jpg' pelo nome exato do arquivo da foto que você salvou na pasta public */}
+            {/* Aqui vai a foto oficial do Bispado puxando o arquivo capa.png */}
             <img 
-              src="/equipe.jpg" 
+              src="/capa.png" 
               alt="Obispado Vila Jacui" 
               style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
               onError={(e) => {
@@ -73,7 +72,7 @@ export default function Home() {
             />
             <div style={{ display: 'none', flexDirection: 'column', alignItems: 'center', color: '#666' }}>
               <span style={{ fontSize: '40px', marginBottom: '10px' }}>📸</span>
-              <span>Imagem da Equipe (Salve a foto como "equipe.jpg" na pasta public)</span>
+              <span>Imagem da Equipe não encontrada (Verifique se salvou como capa.png na pasta public)</span>
             </div>
           </div>
 
