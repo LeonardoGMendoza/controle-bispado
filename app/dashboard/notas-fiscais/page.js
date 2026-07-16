@@ -60,13 +60,7 @@ export default async function NotasFiscaisPage() {
                         Ver Foto
                       </a>
                     ) : (
-                      <form action={uploadAnexo} style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
-                        <input type="hidden" name="notaId" value={nota.id} />
-                        <input type="file" name="file" style={{ fontSize: '11px', maxWidth: '140px', overflow: 'hidden' }} required />
-                        <button type="submit" style={{ backgroundColor: '#005c8a', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 12px', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>
-                          Salvar Foto
-                        </button>
-                      </form>
+                      <span style={{ color: '#aaa', fontSize: '12px' }}>—</span>
                     )}
                   </td>
                   <td style={{ padding: '12px', textAlign: 'center' }}>

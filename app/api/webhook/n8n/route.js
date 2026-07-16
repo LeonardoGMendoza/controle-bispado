@@ -11,14 +11,10 @@ export async function POST(request) {
   try {
     const data = await request.json();
 
-    // The data sent from n8n might look like this:
-    // {
-    //   "fornecedor": "Mercado",
-    //   "valor": 150.50,
-    //   "descricao": "Compra para atividade dos jovens",
-    //   "urlAnexo": "https://link-da-imagem.com",
-    //   "categoria": "Rapazes"
-    // }
+    // Ignora mensagens sem foto — só salva se tiver imagem anexada
+    if (!data.urlAnexo || data.urlAnexo === '') {
+      return NextResponse.json({ success: false, motivo: 'Sem foto, ignorado' }, { status: 200 });
+    }
 
     const novaNota = await prisma.notaFiscal.create({
       data: {
@@ -27,7 +23,7 @@ export async function POST(request) {
         dataEmissao: data.dataEmissao ? new Date(data.dataEmissao) : new Date(),
         descricao: data.descricao || '',
         categoria: data.categoria || 'Geral',
-        urlAnexo: data.urlAnexo || null,
+        urlAnexo: data.urlAnexo,
         cnpj: data.cnpj || null,
         status: 'Pendente'
       }
