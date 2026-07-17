@@ -9,7 +9,8 @@ const prisma = new PrismaClient({ adapter });
 
 export async function PUT(request, { params }) {
   try {
-    const id = parseInt(params.id);
+    const resolvedParams = await params;
+    const id = parseInt(resolvedParams.id);
     const data = await request.json();
 
     const entrevista = await prisma.entrevista.update({
@@ -21,10 +22,16 @@ export async function PUT(request, { params }) {
 
     // Se marcou como concluída, atualiza a ficha do membro!
     if (data.status === 'Concluída') {
-      await prisma.jovem.update({
-        where: { id: entrevista.membroId },
-        data: { dataUltimaEntrevista: new Date() }
-      });
+      const membro = await prisma.membro.findUnique({ where: { id: entrevista.membroId } });
+      if (membro) {
+        const jovem = await prisma.jovem.findFirst({ where: { nome: membro.nome } });
+        if (jovem) {
+          await prisma.jovem.update({
+            where: { id: jovem.id },
+            data: { dataUltimaEntrevista: new Date() }
+          });
+        }
+      }
     }
 
     return NextResponse.json(entrevista);
@@ -36,7 +43,8 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const id = parseInt(params.id);
+    const resolvedParams = await params;
+    const id = parseInt(resolvedParams.id);
     
     await prisma.entrevista.delete({
       where: { id }
