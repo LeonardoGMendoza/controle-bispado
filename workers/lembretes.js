@@ -15,8 +15,9 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 // Configurações do WAHA
-const WAHA_URL = process.env.WAHA_URL || 'http://localhost:8102';
+const WAHA_URL = process.env.WAHA_URL || 'http://localhost:8101';
 const SESSAO_WAHA = 'default';
+const WAHA_API_KEY = process.env.WAHA_API_KEY || 'bispado123';
 
 async function dispararLembretes() {
     console.log('[WAHA Lembretes] Iniciando varredura de lembretes às', new Date().toLocaleString('pt-BR'));
@@ -74,7 +75,10 @@ async function dispararLembretes() {
             try {
                 const response = await fetch(`${WAHA_URL}/api/sendText`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Api-Key': WAHA_API_KEY
+                    },
                     body: JSON.stringify({
                         chatId: chatId,
                         text: mensagem,
