@@ -23,6 +23,8 @@ export default function Entrevistas() {
   const [events, setEvents] = useState([]);
   const [membros, setMembros] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [eventModalOpen, setEventModalOpen] = useState(false);
+  const [selectedEventData, setSelectedEventData] = useState(null);
   
   const [selectedMembro, setSelectedMembro] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
@@ -61,6 +63,55 @@ export default function Entrevistas() {
     setSelectedDate(format(start, 'yyyy-MM-dd'));
     setSelectedTime(format(start, 'HH:mm'));
     setModalOpen(true);
+  };
+
+  const handleSelectEvent = (event) => {
+    setSelectedEventData(event.resource);
+    setEventModalOpen(true);
+  };
+
+  const handleConcluir = async () => {
+    if (!selectedEventData) return;
+    const res = await fetch(`/api/entrevistas/${selectedEventData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'Concluída' })
+    });
+    if (res.ok) {
+      setEventModalOpen(false);
+      fetchEntrevistas();
+      alert("Entrevista marcada como concluída e ficha atualizada!");
+    } else {
+      alert("Erro ao atualizar.");
+    }
+  };
+
+  const handleExcluir = async () => {
+    if (!selectedEventData) return;
+    if (confirm("Tem certeza que deseja excluir este agendamento?")) {
+      const res = await fetch(`/api/entrevistas/${selectedEventData.id}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        setEventModalOpen(false);
+        fetchEntrevistas();
+      } else {
+        alert("Erro ao excluir.");
+      }
+    }
+  };
+
+  const eventStyleGetter = (event) => {
+    const isConcluida = event.resource.status === 'Concluída';
+    return {
+      style: {
+        backgroundColor: isConcluida ? '#10b981' : '#1e40af', // Green se concluída, senão azul
+        opacity: isConcluida ? 0.8 : 1,
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+      }
+    };
   };
 
   const handleSubmit = async (e) => {
@@ -112,6 +163,8 @@ export default function Entrevistas() {
           culture="pt-BR"
           selectable
           onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          eventPropGetter={eventStyleGetter}
           messages={{
             next: "Próximo",
             previous: "Anterior",
@@ -169,6 +222,39 @@ export default function Entrevistas() {
                 <button type="submit" className={styles.submitButton}>Salvar Agendamento</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {eventModalOpen && selectedEventData && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Detalhes da Entrevista</h2>
+            <div style={{ margin: '20px 0', fontSize: '1.1rem', lineHeight: '1.6' }}>
+              <p><strong>Nome:</strong> {selectedEventData.membro?.nome}</p>
+              <p><strong>Tipo:</strong> {selectedEventData.tipo}</p>
+              <p><strong>Data e Hora:</strong> {new Date(selectedEventData.dataHora).toLocaleString('pt-BR')}</p>
+              <p>
+                <strong>Status:</strong> 
+                <span style={{ 
+                  color: selectedEventData.status === 'Concluída' ? '#10b981' : '#f59e0b',
+                  fontWeight: 'bold',
+                  marginLeft: '8px'
+                }}>
+                  {selectedEventData.status}
+                </span>
+              </p>
+            </div>
+            <div className={styles.modalActions} style={{ justifyContent: 'space-between' }}>
+              <button onClick={() => setEventModalOpen(false)} className={styles.cancelButton}>Fechar</button>
+              
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button onClick={handleExcluir} style={{ padding: '10px 15px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Excluir</button>
+                {selectedEventData.status !== 'Concluída' && (
+                  <button onClick={handleConcluir} style={{ padding: '10px 15px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>✓ Marcar Concluída</button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
