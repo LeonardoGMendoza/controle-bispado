@@ -105,13 +105,18 @@ async function dispararLembretes() {
     }
 }
 
-// Configura o cron para rodar todos os dias às 08:00 AM (Fuso Horário de São Paulo)
-cron.schedule('0 8 * * *', () => {
-    dispararLembretes();
-}, {
+// Inicia o cron job
+cron.schedule('0 8 * * *', dispararLembretes, {
+    scheduled: true,
     timezone: "America/Sao_Paulo"
 });
 
 console.log('[WAHA Lembretes] Robô iniciado com sucesso!');
 console.log(`[WAHA Lembretes] WAHA URL configurada: ${WAHA_URL}`);
 console.log('[WAHA Lembretes] Aguardando silenciosamente. Disparos programados para todos os dias às 08:00 AM.');
+
+// Permite rodar manualmente na hora executando: node workers/lembretes.js --teste
+if (process.argv.includes('--teste')) {
+    console.log('[WAHA Lembretes] MODO TESTE ATIVADO! Executando imediatamente...');
+    dispararLembretes();
+}
