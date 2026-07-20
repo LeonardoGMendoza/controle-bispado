@@ -231,7 +231,7 @@ export default function Entrevistas() {
           <div className={styles.modal}>
             <h2>Detalhes da Entrevista</h2>
             <div style={{ margin: '20px 0', fontSize: '1.1rem', lineHeight: '1.6' }}>
-              <p><strong>Nome:</strong> {selectedEventData.membro?.nome}</p>
+              <p><strong>Nome:</strong> {selectedEventData.membro && selectedEventData.membro.nome}</p>
               <p><strong>Tipo:</strong> {selectedEventData.tipo}</p>
               <p><strong>Data e Hora:</strong> {new Date(selectedEventData.dataHora).toLocaleString('pt-BR')}</p>
               <p>

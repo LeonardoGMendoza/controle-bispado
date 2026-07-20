@@ -19,7 +19,7 @@ export default function DashboardOverview() {
         </div>
 
         <div style={{ padding: '40px', backgroundColor: 'white', borderRadius: '12px', marginTop: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-          <h2 style={{ color: '#005c8a', marginBottom: '16px' }}>Bem-vindo, {session?.user?.name || 'Líder'}</h2>
+          <h2 style={{ color: '#005c8a', marginBottom: '16px' }}>Bem-vindo, {(session && session.user && session.user.name) || 'Líder'}</h2>
           <p style={{ color: '#666', lineHeight: '1.6' }}>
             Este é o painel de gestão oficial do Bispado. Aqui você pode acompanhar as Notas Fiscais, gerenciar o acompanhamento dos Rapazes e Moças, organizar Entrevistas e Visitas, e cuidar dos fundos de Missão e Compras.
           </p>

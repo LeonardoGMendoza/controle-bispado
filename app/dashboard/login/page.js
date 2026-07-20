@@ -21,7 +21,7 @@ export default function LoginPage() {
       redirect: false,
     });
     setLoading(false);
-    if (res?.error) {
+    if (res && res.error) {
       setError('Email ou senha incorretos. Tente novamente.');
     } else {
       router.push('/dashboard');
