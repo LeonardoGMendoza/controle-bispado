@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
-export async function GET(request, { params }) {
-  const { filename } = params;
+export async function GET(request, context) {
+  const { filename } = await context.params;
   
   try {
     const filePath = path.join(process.cwd(), 'public', 'anexos', filename);
