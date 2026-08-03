@@ -27,15 +27,32 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
 
   // Recálculo Dinâmico dos KPIs com base no DF Filtrado
   const totalFiltrados = filtrados.length;
-  const jovens = filtrados.filter(m => m.idade < 18).length;
-  const elderes = filtrados.filter(m => m.idade >= 18 && m.sexo === 'M').length;
-  const socorro = filtrados.filter(m => m.idade >= 18 && m.sexo === 'F').length;
+  
+  // Agrupar por organização para o gráfico
+  const orgCounts = {};
+  filtrados.forEach(m => {
+    let org = m.organizacao;
+    if (!org || org === '' || org === 'Não informada') org = 'Sem Organização';
+    orgCounts[org] = (orgCounts[org] || 0) + 1;
+  });
 
-  const dataDemografia = [
-    { name: 'Jovens (<18)', value: jovens, fill: '#3B82F6' },
-    { name: 'Élderes/Sacerdócio', value: elderes, fill: '#F59E0B' },
-    { name: 'Soc. Socorro', value: socorro, fill: '#D94F8A' }
-  ].filter(d => d.value > 0);
+  const getOrgColor = (org) => {
+    if (org.includes('Moças')) return '#D94F8A'; // Rosa
+    if (org.includes('Socorro')) return '#F472B6'; // Rosa claro
+    if (org.includes('Diácono') || org.includes('Mestre') || org.includes('Sacerdote')) return '#3B82F6'; // Azul
+    if (org.includes('Élder') || org.includes('Sumo Sacerdote')) return '#F59E0B'; // Laranja
+    if (org.includes('Primária')) return '#10B981'; // Verde
+    return '#64748b'; // Cinza
+  };
+
+  const dataDemografia = Object.keys(orgCounts).map(org => ({
+    name: org,
+    value: orgCounts[org],
+    fill: getOrgColor(org)
+  })).sort((a, b) => b.value - a.value);
+
+  // Jovens para o KPI (Sacerdócio Aarônico + Moças)
+  const jovens = filtrados.filter(m => ['Diácono', 'Mestre', 'Sacerdote', 'Moças'].includes(m.organizacao)).length;
 
   const entrevistasStatus = [
     { name: 'Realizadas', value: entrevistas.filter(e => e.status === 'Realizada').length, fill: '#10B981' },
@@ -132,7 +149,7 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
         <div style={{ flex: '999 1 320px', padding: '24px 16px', overflowY: 'auto' }}>
           
           <div style={{ marginBottom: 36 }}>
-            <h1 style={{ fontSize: 32, fontWeight: 900, color: '#f8fafc', margin: 0 }}>Dashboard Analítico: Acompanhamento Pastoral</h1>
+            <h1 style={{ fontSize: 32, fontWeight: 900, color: '#f8fafc', margin: 0 }}>Dashboard Analítico: Acompanhamento de Progresso</h1>
             <p style={{ color: '#94a3b8', marginTop: 6, fontSize: 15 }}>Monitoramento de KPIs da Ala — {totalFiltrados} membro(s) encontrado(s) no filtro atual</p>
           </div>
 
