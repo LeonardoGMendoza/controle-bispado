@@ -36,14 +36,18 @@ export default async function IndicadoresPage() {
     // Simula recomendação (Membros acima de 12 anos)
     const recomendacao = (m.idade >= 11 && m.id % 3 === 0) ? 'Expirada/Sem' : (m.idade >= 11 ? 'Ativa' : 'Não se aplica');
 
-    // Regra Doutrinária de Sacerdócio: Somente Homens a partir de 11 anos
-    let sacerdocio = 'Não se aplica (Mulheres)';
-    if (m.sexo === 'M') {
-      if (m.idade >= 18) sacerdocio = (m.id % 5 === 0) ? 'Sem Sacerdócio' : 'Élder';
-      else if (m.idade >= 16) sacerdocio = 'Sacerdote';
-      else if (m.idade >= 14) sacerdocio = 'Mestre';
-      else if (m.idade >= 11) sacerdocio = 'Diácono';
-      else sacerdocio = 'Sem Sacerdócio (<11 anos)';
+    // Regra Doutrinária de Organização e Sacerdócio
+    let organizacao = '';
+    if (m.idade < 12) {
+      organizacao = 'Primária';
+    } else if (m.sexo === 'F') {
+      if (m.idade >= 18) organizacao = 'Sociedade de Socorro';
+      else organizacao = 'Moças';
+    } else if (m.sexo === 'M') {
+      if (m.idade >= 18) organizacao = (m.id % 5 === 0) ? 'Homens (Sem Sacerdócio)' : 'Élder / Sumo Sacerdote';
+      else if (m.idade >= 16) organizacao = 'Sacerdote';
+      else if (m.idade >= 14) organizacao = 'Mestre';
+      else organizacao = 'Diácono'; // 12 a 13 anos
     }
 
     return {
@@ -57,7 +61,7 @@ export default async function IndicadoresPage() {
       focoMissao,
       precisaChamado,
       recomendacao,
-      sacerdocio,
+      organizacao,
       novoBatizado: (m.id % 10 === 0) // simula 10% de conversos recentes
     };
   });

@@ -7,22 +7,23 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
   // Estados para os filtros
   const [focoMissao, setFocoMissao] = useState('');
   const [statusEvolucao, setStatusEvolucao] = useState('');
-  const [sacerdocio, setSacerdocio] = useState('');
-  const [novoBatizado, setNovoBatizado] = useState(false);
+  const [organizacao, setOrganizacao] = useState('');
+  const [somenteNovos, setSomenteNovos] = useState(false);
   const [precisaChamado, setPrecisaChamado] = useState('');
   const [recomendacao, setRecomendacao] = useState('');
   const [aniversariantes, setAniversariantes] = useState(false);
 
   // Lógica de cruzamento de filtros (Cross-filtering)
-  let filtrados = membros;
-  
-  if (focoMissao) filtrados = filtrados.filter(m => m.focoMissao === focoMissao);
-  if (statusEvolucao) filtrados = filtrados.filter(m => m.statusEvolucao === statusEvolucao);
-  if (sacerdocio) filtrados = filtrados.filter(m => m.sacerdocio === sacerdocio);
-  if (novoBatizado) filtrados = filtrados.filter(m => m.novoBatizado === true);
-  if (precisaChamado) filtrados = filtrados.filter(m => m.precisaChamado === precisaChamado);
-  if (recomendacao) filtrados = filtrados.filter(m => m.recomendacao === recomendacao);
-  if (aniversariantes) filtrados = filtrados.filter(m => m.aniversariante === true);
+  const filtrados = membros.filter(m => {
+    if (focoMissao && m.focoMissao !== focoMissao) return false;
+    if (statusEvolucao && m.statusEvolucao !== statusEvolucao) return false;
+    if (organizacao && m.organizacao !== organizacao) return false;
+    if (somenteNovos && !m.novoBatizado) return false;
+    if (precisaChamado && m.precisaChamado !== precisaChamado) return false;
+    if (recomendacao && m.recomendacao !== recomendacao) return false;
+    if (aniversariantes && !m.aniversariante) return false;
+    return true;
+  });
 
   // Recálculo Dinâmico dos KPIs com base no DF Filtrado
   const totalFiltrados = filtrados.length;
@@ -73,18 +74,19 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
             </select>
           </div>
 
-          {/* Filtro: Sacerdócio */}
+          {/* Filtro: Organização */}
           <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#cbd5e1', marginBottom: 6 }}>Sacerdócio (Homens a partir de 11)</label>
-            <select value={sacerdocio} onChange={e => setSacerdocio(e.target.value)} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', fontSize: 13 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#cbd5e1', marginBottom: 6 }}>Organização / Sacerdócio</label>
+            <select value={organizacao} onChange={e => setOrganizacao(e.target.value)} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', fontSize: 13 }}>
               <option value="">Todos</option>
               <option value="Diácono">Diácono</option>
               <option value="Mestre">Mestre</option>
               <option value="Sacerdote">Sacerdote</option>
-              <option value="Élder">Élder / Sumo Sacerdote</option>
-              <option value="Sem Sacerdócio">Sem Sacerdócio</option>
-              <option value="Sem Sacerdócio (<11 anos)">Crianças (Menores que 11)</option>
-              <option value="Não se aplica (Mulheres)">Não se aplica (Mulheres)</option>
+              <option value="Élder / Sumo Sacerdote">Élder / Sumo Sacerdote</option>
+              <option value="Homens (Sem Sacerdócio)">Homens Adultos (Sem Sacerdócio)</option>
+              <option value="Moças">Moças</option>
+              <option value="Sociedade de Socorro">Sociedade de Socorro</option>
+              <option value="Primária">Primária (Crianças)</option>
             </select>
           </div>
 
@@ -110,7 +112,7 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
 
           {/* Toggles Rápidos */}
           <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <input type="checkbox" checked={novoBatizado} onChange={e => setNovoBatizado(e.target.checked)} id="novoBatizado" style={{ accentColor: '#3b82f6', width: 16, height: 16 }} />
+            <input type="checkbox" checked={somenteNovos} onChange={e => setSomenteNovos(e.target.checked)} id="novoBatizado" style={{ accentColor: '#3b82f6', width: 16, height: 16 }} />
             <label htmlFor="novoBatizado" style={{ fontSize: 13, color: '#cbd5e1', cursor: 'pointer' }}>Somente Novos Batizados</label>
           </div>
 
@@ -120,7 +122,7 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
           </div>
 
           <button onClick={() => {
-            setFocoMissao(''); setStatusEvolucao(''); setSacerdocio(''); setNovoBatizado(false); setPrecisaChamado(''); setRecomendacao(''); setAniversariantes(false);
+            setFocoMissao(''); setStatusEvolucao(''); setOrganizacao(''); setSomenteNovos(false); setPrecisaChamado(''); setRecomendacao(''); setAniversariantes(false);
           }} style={{ width: '100%', padding: '10px', backgroundColor: '#334155', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
             Limpar Filtros
           </button>
@@ -182,7 +184,7 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
                     <div key={m.id} style={{ padding: 12, background: '#1e293b', borderRadius: 6, borderLeft: `3px solid ${m.statusEvolucao === 'Precisa de Ajuda' ? '#ef4444' : '#10b981'}` }}>
                       <div style={{ fontWeight: 600, fontSize: 14 }}>{m.nome}</div>
                       <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>
-                        {m.idade} anos • {m.sacerdocio} • Rec: {m.recomendacao}
+                        {m.idade} anos • {m.organizacao} • Rec: {m.recomendacao}
                       </div>
                     </div>
                   ))}
