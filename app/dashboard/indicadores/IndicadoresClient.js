@@ -182,9 +182,11 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {filtrados.slice(0, 100).map(m => (
                     <div key={m.id} style={{ padding: 12, background: '#1e293b', borderRadius: 6, borderLeft: `3px solid ${m.statusEvolucao === 'Precisa de Ajuda' ? '#ef4444' : '#10b981'}` }}>
-                      <div style={{ fontWeight: 600, fontSize: 14 }}>{m.nome}</div>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>
+                        {m.nome} {m.aniversariante && <span title="Aniversariante do Mês">🎂</span>}
+                      </div>
                       <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 4 }}>
-                        {m.idade} anos • {m.organizacao} • Rec: {m.recomendacao}
+                        {m.idade} anos • {m.organizacao} • Rec: <span style={{ color: m.recomendacao === 'Expirada/Sem' ? '#ef4444' : '#10b981', fontWeight: 600 }}>{m.recomendacao}</span>
                       </div>
                     </div>
                   ))}

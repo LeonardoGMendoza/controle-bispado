@@ -61,13 +61,21 @@ model Jovem {
 
 model Membro {
   id             Int       @id @default(autoincrement())
-  nome           String
+  nome           String    @unique
   sexo           String
   idade          Int?
   dataNascimento DateTime?
   telefone       String?
   email          String?
   status         String    @default("Ativo")
+  
+  // Campos Estratégicos Adicionados
+  organizacao    String    @default("")
+  recomendacao   String    @default("Não se aplica")
+  focoMissao     String    @default("Não se aplica")
+  precisaChamado String    @default("Não")
+  novoBatizado   Boolean   @default(false)
+
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   
