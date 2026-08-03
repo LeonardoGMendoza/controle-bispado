@@ -145,12 +145,12 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
               <div style={{ fontSize: 36, fontWeight: 900, color: '#3b82f6', lineHeight: 1.2 }}>{jovens}</div>
             </div>
             <div style={{ background: 'rgba(15, 23, 42, 0.85)', border: '1px solid rgba(148, 163, 184, 0.35)', borderRadius: 10, padding: 20 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Recomendação Ativa (Geral)</div>
-              <div style={{ fontSize: 36, fontWeight: 900, color: '#10b981', lineHeight: 1.2 }}>{membros.filter(m => m.recomendacao === 'Ativa').length}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Recomendação Ativa (No Filtro)</div>
+              <div style={{ fontSize: 36, fontWeight: 900, color: '#10b981', lineHeight: 1.2 }}>{filtrados.filter(m => m.recomendacao === 'Ativa').length}</div>
             </div>
             <div style={{ background: 'rgba(15, 23, 42, 0.85)', border: '1px solid rgba(148, 163, 184, 0.35)', borderRadius: 10, padding: 20 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Missão em Foco (Geral)</div>
-              <div style={{ fontSize: 36, fontWeight: 900, color: '#f59e0b', lineHeight: 1.2 }}>{membros.filter(m => m.focoMissao === 'Preparação Missão (Até 25 anos)').length}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Missão em Foco (No Filtro)</div>
+              <div style={{ fontSize: 36, fontWeight: 900, color: '#f59e0b', lineHeight: 1.2 }}>{filtrados.filter(m => m.focoMissao === 'Preparação Missão (Até 25 anos)').length}</div>
             </div>
           </div>
 
