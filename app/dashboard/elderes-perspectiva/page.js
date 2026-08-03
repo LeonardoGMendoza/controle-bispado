@@ -13,7 +13,9 @@ export default async function ElderesPerspectivaPage() {
   const membros = await prisma.membro.findMany({
     where: {
       sexo: 'M',
-      idade: { gte: 18 } // Homens com 18 anos ou mais
+      organizacao: {
+        notIn: ['Élder / Sumo Sacerdote', 'Primária']
+      }
     },
     orderBy: { nome: 'asc' }
   });
