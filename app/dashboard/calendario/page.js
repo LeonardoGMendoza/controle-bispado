@@ -10,17 +10,27 @@ const prisma = new PrismaClient({ adapter });
 export const dynamic = 'force-dynamic';
 
 export default async function CalendarioPage() {
-  // Buscar os eventos da Ala
-  const eventos = await prisma.evento.findMany();
+  // Buscar os eventos da Ala e Entrevistas com tratamento de erro
+  let eventos = [];
+  let entrevistas = [];
+
+  try {
+    eventos = await prisma.evento.findMany();
+  } catch (error) {
+    console.warn("Tabela Evento ainda não existe no DB. Lembre-se de rodar 'npx prisma db push'");
+  }
   
-  // Buscar as entrevistas agendadas (incluindo nome do membro para o título)
-  const entrevistas = await prisma.entrevista.findMany({
-    include: {
-      membro: {
-        select: { nome: true }
+  try {
+    entrevistas = await prisma.entrevista.findMany({
+      include: {
+        membro: {
+          select: { nome: true }
+        }
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.warn("Erro ao buscar entrevistas.");
+  }
 
   // Formatar eventos no padrão do react-big-calendar
   const eventosCalendario = eventos.map(e => ({

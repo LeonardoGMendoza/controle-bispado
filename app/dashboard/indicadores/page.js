@@ -27,14 +27,24 @@ export default async function IndicadoresPage() {
     // Simula quem está evoluindo (ex: maioria evolui, alguns precisam de ajuda)
     const statusEvolucao = (m.id % 5 === 0) ? 'Precisa de Ajuda' : 'Evoluindo';
     
-    // Simula quem vai pra missão (rapazes e moças entre 17 e 25 anos)
-    const focoMissao = (m.idade >= 17 && m.idade <= 25) ? 'Preparação Missão' : 'Não se aplica';
+    // Simula quem vai pra missão (até 25, solteiro, sem filhos)
+    const focoMissao = (m.idade >= 17 && m.idade <= 25) ? 'Preparação Missão (Até 25 anos)' : 'Não se aplica';
     
     // Simula chamado (1 em cada 4 não tem chamado)
     const precisaChamado = (m.id % 4 === 0) ? 'Sim' : 'Não';
     
     // Simula recomendação (Membros acima de 12 anos)
-    const recomendacao = (m.idade >= 12 && m.id % 3 === 0) ? 'Expirada/Sem' : 'Ativa';
+    const recomendacao = (m.idade >= 11 && m.id % 3 === 0) ? 'Expirada/Sem' : (m.idade >= 11 ? 'Ativa' : 'Não se aplica');
+
+    // Regra Doutrinária de Sacerdócio: Somente Homens a partir de 11 anos
+    let sacerdocio = 'Não se aplica (Mulheres)';
+    if (m.sexo === 'M') {
+      if (m.idade >= 18) sacerdocio = (m.id % 5 === 0) ? 'Sem Sacerdócio' : 'Élder';
+      else if (m.idade >= 16) sacerdocio = 'Sacerdote';
+      else if (m.idade >= 14) sacerdocio = 'Mestre';
+      else if (m.idade >= 11) sacerdocio = 'Diácono';
+      else sacerdocio = 'Sem Sacerdócio (<11 anos)';
+    }
 
     return {
       id: m.id,
@@ -47,7 +57,7 @@ export default async function IndicadoresPage() {
       focoMissao,
       precisaChamado,
       recomendacao,
-      sacerdocio: m.nome.includes("Sacerdote") ? "Sacerdote" : (m.sexo === 'M' ? "Sem Sacerdócio" : "N/A"),
+      sacerdocio,
       novoBatizado: (m.id % 10 === 0) // simula 10% de conversos recentes
     };
   });

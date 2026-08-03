@@ -55,10 +55,10 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
 
           {/* Filtro: Foco Missão */}
           <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#cbd5e1', marginBottom: 6 }}>Foco Missão (Moças/Rapazes)</label>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#cbd5e1', marginBottom: 6 }}>Foco Missão (Solteiros s/ filhos)</label>
             <select value={focoMissao} onChange={e => setFocoMissao(e.target.value)} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', fontSize: 13 }}>
               <option value="">Todos</option>
-              <option value="Preparação Missão">Em Preparação (17-25)</option>
+              <option value="Preparação Missão (Até 25 anos)">Em Preparação (Até 25 anos)</option>
               <option value="Não se aplica">Não se aplica</option>
             </select>
           </div>
@@ -75,11 +75,16 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
 
           {/* Filtro: Sacerdócio */}
           <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#cbd5e1', marginBottom: 6 }}>Sacerdócio (Homens)</label>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#cbd5e1', marginBottom: 6 }}>Sacerdócio (Homens a partir de 11)</label>
             <select value={sacerdocio} onChange={e => setSacerdocio(e.target.value)} style={{ width: '100%', padding: '8px 12px', borderRadius: 6, backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', fontSize: 13 }}>
               <option value="">Todos</option>
-              <option value="Sacerdote">Possui Sacerdócio</option>
+              <option value="Diácono">Diácono</option>
+              <option value="Mestre">Mestre</option>
+              <option value="Sacerdote">Sacerdote</option>
+              <option value="Élder">Élder / Sumo Sacerdote</option>
               <option value="Sem Sacerdócio">Sem Sacerdócio</option>
+              <option value="Sem Sacerdócio (<11 anos)">Crianças (Menores que 11)</option>
+              <option value="Não se aplica (Mulheres)">Não se aplica (Mulheres)</option>
             </select>
           </div>
 
