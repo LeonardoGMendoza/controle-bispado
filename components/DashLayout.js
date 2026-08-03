@@ -22,6 +22,7 @@ export default function DashLayout({ children }) {
     { href: '/dashboard/mocas', icon: '👩', label: 'Moças' },
     { href: '/dashboard/elderes-perspectiva', icon: '📋', label: 'Élderes Perspectiva' },
     { href: '/dashboard/jovens-diretorio', icon: '🌟', label: 'Jovens — Diretório' },
+    { href: '/dashboard/socorro-diretorio', icon: '🌸', label: 'Sociedade de Socorro' },
     { href: '/dashboard/compras', icon: '🛒', label: 'Compras' },
     { href: '/dashboard/visitas', icon: '🚪', label: 'Visitas' },
     { href: '/dashboard/entrevistas', icon: '🤝', label: 'Entrevistas' },
