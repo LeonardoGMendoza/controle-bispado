@@ -15,10 +15,11 @@ export default function DashLayout({ children }) {
   const isEquipe = ['cuidador', 'tecnico', 'enfermeira'].includes(session?.user?.role);
 
   const allowedNavItems = [
-    { href: '/dashboard', icon: '📈', label: 'Visão Geral' },
-    { href: '/dashboard/notas-fiscais', icon: '📄', label: 'Notas Fiscais' },
-    { href: '/dashboard/missao', icon: '🌍', label: 'Missão' },
-    { href: '/dashboard/rapazes', icon: '👨', label: 'Rapazes' },
+    { href: '/dashboard', icon: '📊', label: 'Visão Geral' },
+    { href: '/dashboard/indicadores', icon: '📈', label: 'Indicadores Estratégicos' },
+    { href: '/dashboard/notas-fiscais', icon: '🧾', label: 'Notas Fiscais' },
+    { href: '/dashboard/missao', icon: '🗺️', label: 'Missão' },
+    { href: '/dashboard/rapazes', icon: '👦', label: 'Rapazes' },
     { href: '/dashboard/mocas', icon: '👩', label: 'Moças' },
     { href: '/dashboard/elderes-perspectiva', icon: '📋', label: 'Élderes Perspectiva' },
     { href: '/dashboard/jovens-diretorio', icon: '🌟', label: 'Jovens — Diretório' },
