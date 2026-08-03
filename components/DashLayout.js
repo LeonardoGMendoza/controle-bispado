@@ -20,6 +20,8 @@ export default function DashLayout({ children }) {
     { href: '/dashboard/missao', icon: '🌍', label: 'Missão' },
     { href: '/dashboard/rapazes', icon: '👨', label: 'Rapazes' },
     { href: '/dashboard/mocas', icon: '👩', label: 'Moças' },
+    { href: '/dashboard/elderes-perspectiva', icon: '📋', label: 'Élderes Perspectiva' },
+    { href: '/dashboard/jovens-diretorio', icon: '🌟', label: 'Jovens — Diretório' },
     { href: '/dashboard/compras', icon: '🛒', label: 'Compras' },
     { href: '/dashboard/visitas', icon: '🚪', label: 'Visitas' },
     { href: '/dashboard/entrevistas', icon: '🤝', label: 'Entrevistas' },
