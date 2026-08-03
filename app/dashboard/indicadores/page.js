@@ -17,6 +17,9 @@ export default async function IndicadoresPage() {
     orderBy: { nome: 'asc' }
   });
 
+  const entrevistasBrutas = await prisma.entrevista.findMany();
+  const notasFiscaisBrutas = await prisma.notaFiscal.findMany();
+
   // 2. Mapeamos os dados para o padrão que o Client (React) espera
   const dataAtual = new Date();
   const mesAtual = dataAtual.getMonth() + 1; // 1 a 12
