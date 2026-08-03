@@ -17,7 +17,9 @@ export default function DashLayout({ children }) {
   const allowedNavItems = [
     { href: '/dashboard', icon: '📊', label: 'Visão Geral' },
     { href: '/dashboard/indicadores', icon: '📈', label: 'Indicadores Estratégicos' },
+    { href: '/dashboard/calendario', icon: '📅', label: 'Calendário da Ala' },
     { href: '/dashboard/notas-fiscais', icon: '🧾', label: 'Notas Fiscais' },
+
     { href: '/dashboard/missao', icon: '🗺️', label: 'Missão' },
     { href: '/dashboard/rapazes', icon: '👦', label: 'Rapazes' },
     { href: '/dashboard/mocas', icon: '👩', label: 'Moças' },

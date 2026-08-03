@@ -11,45 +11,58 @@ export const dynamic = 'force-dynamic';
 
 export default async function IndicadoresPage() {
   // Buscar os dados brutos no banco para calcular os indicadores
-  const membros = await prisma.membro.findMany();
-  const entrevistas = await prisma.entrevista.findMany();
-  const notasFiscais = await prisma.notaFiscal.findMany();
+  const membrosBrutos = await prisma.membro.findMany();
+  const entrevistasBrutas = await prisma.entrevista.findMany();
+  const notasFiscaisBrutas = await prisma.notaFiscal.findMany();
 
-  // Processamento dos Indicadores
-  const totalMembros = membros.length;
-  
-  // Demografia
-  const jovens = membros.filter(m => m.idade < 18).length;
-  const elderes = membros.filter(m => m.idade >= 18 && m.sexo === 'M').length;
-  const socorro = membros.filter(m => m.idade >= 18 && m.sexo === 'F').length;
+  // Vamos mapear os dados para o Client fazer os filtros cruzados (Cross-filtering)
+  // Como o banco ainda não tem todos os campos (missão, chamado), vamos simular alguns 
+  // comportamentos baseados na idade para o Bispo já poder ver a arquitetura funcionando!
+  const membros = membrosBrutos.map(m => {
+    // Simulações estratégicas para o MVP do Dashboard
+    const mesAtual = new Date().getMonth();
+    const mesNasc = m.dataNascimento ? m.dataNascimento.getMonth() : -1;
+    const isAniversariante = mesNasc === mesAtual;
+    
+    // Simula quem está evoluindo (ex: maioria evolui, alguns precisam de ajuda)
+    const statusEvolucao = (m.id % 5 === 0) ? 'Precisa de Ajuda' : 'Evoluindo';
+    
+    // Simula quem vai pra missão (rapazes e moças entre 17 e 25 anos)
+    const focoMissao = (m.idade >= 17 && m.idade <= 25) ? 'Preparação Missão' : 'Não se aplica';
+    
+    // Simula chamado (1 em cada 4 não tem chamado)
+    const precisaChamado = (m.id % 4 === 0) ? 'Sim' : 'Não';
+    
+    // Simula recomendação (Membros acima de 12 anos)
+    const recomendacao = (m.idade >= 12 && m.id % 3 === 0) ? 'Expirada/Sem' : 'Ativa';
 
-  // Entrevistas
-  const entrevistasRealizadas = entrevistas.filter(e => e.status === 'Realizada').length;
-  const entrevistasAgendadas = entrevistas.filter(e => e.status === 'Agendada').length;
-  const entrevistasFaltou = entrevistas.filter(e => e.status === 'Faltou').length;
+    return {
+      id: m.id,
+      nome: m.nome,
+      sexo: m.sexo,
+      idade: m.idade || 0,
+      dataNascimento: m.dataNascimento,
+      aniversariante: isAniversariante,
+      statusEvolucao,
+      focoMissao,
+      precisaChamado,
+      recomendacao,
+      sacerdocio: m.nome.includes("Sacerdote") ? "Sacerdote" : (m.sexo === 'M' ? "Sem Sacerdócio" : "N/A"),
+      novoBatizado: (m.id % 10 === 0) // simula 10% de conversos recentes
+    };
+  });
 
-  // Notas Fiscais
-  const notasPendentes = notasFiscais.filter(n => n.status === 'Pendente').length;
-  const notasPagas = notasFiscais.filter(n => n.status === 'Pago' || n.status === 'Aprovada').length;
+  const entrevistas = entrevistasBrutas.map(e => ({
+    id: e.id,
+    status: e.status
+  }));
 
-  const data = {
-    totalMembros,
-    demografia: [
-      { name: 'Jovens (<18)', value: jovens, fill: '#3B82F6' },
-      { name: 'Élderes/Sacerdócio', value: elderes, fill: '#F59E0B' },
-      { name: 'Soc. Socorro', value: socorro, fill: '#D94F8A' }
-    ],
-    entrevistasStatus: [
-      { name: 'Realizadas', value: entrevistasRealizadas, fill: '#10B981' },
-      { name: 'Agendadas', value: entrevistasAgendadas, fill: '#3B82F6' },
-      { name: 'Faltou', value: entrevistasFaltou, fill: '#EF4444' }
-    ],
-    notasResumo: {
-      pendentes: notasPendentes,
-      pagas: notasPagas,
-      totalMes: notasFiscais.filter(n => new Date(n.dataEmissao).getMonth() === new Date().getMonth()).reduce((acc, curr) => acc + curr.valor, 0)
-    }
-  };
+  const notas = notasFiscaisBrutas.map(n => ({
+    id: n.id,
+    status: n.status,
+    valor: n.valor,
+    data: n.dataEmissao
+  }));
 
-  return <IndicadoresClient data={data} />;
+  return <IndicadoresClient membros={membros} entrevistas={entrevistas} notas={notas} />;
 }
