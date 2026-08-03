@@ -44,10 +44,10 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
 
   return (
     <DashLayout>
-      <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0b1120', color: '#f8fafc', fontFamily: 'Inter, Arial, sans-serif' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', minHeight: '100vh', backgroundColor: '#0b1120', color: '#f8fafc', fontFamily: 'Inter, Arial, sans-serif' }}>
         
-        {/* Painel de Filtros Lateral (Estilo Streamlit st.sidebar) */}
-        <div style={{ width: 280, backgroundColor: '#0f172a', padding: 24, borderRight: '1px solid #1e293b' }}>
+        {/* Painel de Filtros (Sidebar) */}
+        <div style={{ flex: '1 1 280px', maxWidth: '100%', backgroundColor: '#0f172a', padding: 24, borderRight: '1px solid #1e293b' }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
             🛸 Filtros Estratégicos
           </h2>
@@ -122,7 +122,7 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
         </div>
 
         {/* Área Principal dos Gráficos */}
-        <div style={{ flex: 1, padding: '32px 40px', overflowY: 'auto' }}>
+        <div style={{ flex: '999 1 320px', padding: '24px 16px', overflowY: 'auto' }}>
           
           <div style={{ marginBottom: 36 }}>
             <h1 style={{ fontSize: 32, fontWeight: 900, color: '#f8fafc', margin: 0 }}>Dashboard Analítico: Acompanhamento Pastoral</h1>
@@ -149,7 +149,7 @@ export default function IndicadoresClient({ membros, entrevistas, notas }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
             {/* Gráfico Demográfico Dinâmico */}
             <div style={{ background: 'rgba(15, 23, 42, 0.85)', border: '1px solid rgba(148, 163, 184, 0.35)', borderRadius: 10, padding: 24, height: 400 }}>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: '0 0 16px 0' }}>Distribuição Demográfica (Dados Filtrados)</h3>

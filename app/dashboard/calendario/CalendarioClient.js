@@ -76,10 +76,10 @@ export default function CalendarioClient({ eventosIniciais }) {
 
   return (
     <DashLayout>
-      <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', color: '#0f172a', fontFamily: 'Inter, Arial, sans-serif' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', minHeight: '100vh', backgroundColor: '#f8fafc', color: '#0f172a', fontFamily: 'Inter, Arial, sans-serif' }}>
         
         {/* Painel de Filtros (Sidebar) */}
-        <div style={{ width: 280, backgroundColor: '#ffffff', padding: 24, borderRight: '1px solid #e2e8f0' }}>
+        <div style={{ flex: '1 1 280px', maxWidth: '100%', backgroundColor: '#ffffff', padding: 24, borderRight: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8, color: '#0f172a' }}>
             📅 Calendário da Ala
           </h2>
@@ -132,9 +132,9 @@ export default function CalendarioClient({ eventosIniciais }) {
         </div>
 
         {/* Área do Calendário (react-big-calendar) */}
-        <div style={{ flex: 1, padding: '32px 40px', backgroundColor: '#ffffff', overflowY: 'auto' }}>
+        <div style={{ flex: '999 1 320px', padding: '24px 16px', backgroundColor: '#ffffff', overflowY: 'auto' }}>
           
-          <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <div>
               <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', margin: 0 }}>Planejamento Mensal</h1>
               <p style={{ color: '#64748b', marginTop: 4, fontSize: 14 }}>Visão integrada de eventos e compromissos do Bispado</p>
