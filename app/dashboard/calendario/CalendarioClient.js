@@ -113,6 +113,28 @@ export default function CalendarioClient({ eventosIniciais }) {
     };
   };
 
+  const handleSelectEvent = async (event) => {
+    if (event.tipo === 'Entrevista') {
+      alert(`Entrevista: ${event.title}\n${event.descricao}\n\n(Para gerenciar entrevistas, use o menu Entrevistas)`);
+      return;
+    }
+
+    const confirmar = confirm(`Deseja EXCLUIR o evento "${event.title}"?\n\n${event.descricao ? 'Descrição: ' + event.descricao : ''}`);
+    if (confirmar) {
+      try {
+        const res = await fetch(`/api/eventos?id=${event.id}`, { method: 'DELETE' });
+        if (res.ok) {
+          alert('Evento excluído com sucesso!');
+          window.location.reload();
+        } else {
+          alert('Erro ao excluir evento.');
+        }
+      } catch (err) {
+        alert('Erro de conexão ao excluir evento.');
+      }
+    }
+  };
+
   return (
     <DashLayout>
       <div style={{ display: 'flex', flexWrap: 'wrap', minHeight: '100vh', backgroundColor: '#f8fafc', color: '#0f172a', fontFamily: 'Inter, Arial, sans-serif' }}>
@@ -199,7 +221,7 @@ export default function CalendarioClient({ eventosIniciais }) {
               messages={messages}
               eventPropGetter={eventStyleGetter}
               popup
-              onSelectEvent={(event) => alert(event.descricao || event.title)}
+              onSelectEvent={handleSelectEvent}
             />
           </div>
 

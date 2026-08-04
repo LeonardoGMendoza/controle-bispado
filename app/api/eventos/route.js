@@ -28,3 +28,26 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID não fornecido' }, { status: 400 });
+
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const adapter = new PrismaPg(pool);
+    const prisma = new PrismaClient({ adapter });
+
+    const cleanId = parseInt(id.replace('ev_', ''), 10);
+
+    await prisma.evento.delete({
+      where: { id: cleanId }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Erro ao deletar evento:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
