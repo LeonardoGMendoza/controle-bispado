@@ -41,6 +41,45 @@ const messages = {
 export default function CalendarioClient({ eventosIniciais }) {
   const [eventos] = useState(eventosIniciais);
   
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [novoTitulo, setNovoTitulo] = useState('');
+  const [novaDataInicio, setNovaDataInicio] = useState('');
+  const [novaDataFim, setNovaDataFim] = useState('');
+  const [novoTipo, setNovoTipo] = useState('Ala');
+  const [novaDescricao, setNovaDescricao] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSalvarEvento = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/eventos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: novoTitulo,
+          inicio: novaDataInicio,
+          fim: novaDataFim,
+          tipo: novoTipo,
+          descricao: novaDescricao,
+          cor: novoTipo === 'Ala' ? '#8b5cf6' : 
+               novoTipo === 'Liderança' ? '#f59e0b' : 
+               '#ec4899' // Organizações
+        })
+      });
+      if (res.ok) {
+        window.location.reload();
+      } else {
+        alert("Erro ao salvar o evento.");
+      }
+    } catch (err) {
+      alert("Erro na conexão.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Filtros de Tipo de Evento
   const [filtroEntrevistas, setFiltroEntrevistas] = useState(true);
   const [filtroAla, setFiltroAla] = useState(true);
@@ -140,7 +179,10 @@ export default function CalendarioClient({ eventosIniciais }) {
               <p style={{ color: '#64748b', marginTop: 4, fontSize: 14 }}>Visão integrada de eventos e compromissos do Bispado</p>
             </div>
             
-            <button style={{ backgroundColor: '#2563eb', color: 'white', padding: '10px 16px', borderRadius: 6, fontWeight: 600, fontSize: 14, border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)' }}>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              style={{ backgroundColor: '#2563eb', color: 'white', padding: '10px 16px', borderRadius: 6, fontWeight: 600, fontSize: 14, border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)' }}
+            >
               + Novo Evento
             </button>
           </div>
@@ -163,6 +205,54 @@ export default function CalendarioClient({ eventosIniciais }) {
 
         </div>
       </div>
+
+      {/* Modal de Novo Evento */}
+      {isModalOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div style={{ backgroundColor: 'white', padding: 24, borderRadius: 12, width: '90%', maxWidth: 500, boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: 20, color: '#0f172a' }}>Novo Evento</h2>
+            <form onSubmit={handleSalvarEvento} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 4 }}>Título do Evento *</label>
+                <input required value={novoTitulo} onChange={e => setNovoTitulo(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14 }} />
+              </div>
+              <div style={{ display: 'flex', gap: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 4 }}>Início *</label>
+                  <input required type="datetime-local" value={novaDataInicio} onChange={e => setNovaDataInicio(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14 }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 4 }}>Fim *</label>
+                  <input required type="datetime-local" value={novaDataFim} onChange={e => setNovaDataFim(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14 }} />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 4 }}>Tipo de Evento *</label>
+                <select value={novoTipo} onChange={e => setNovoTipo(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14 }}>
+                  <option value="Ala">Atividade da Ala</option>
+                  <option value="Liderança">Conselho/Liderança</option>
+                  <option value="Moças">Moças</option>
+                  <option value="Rapazes">Rapazes</option>
+                  <option value="Sociedade de Socorro">Sociedade de Socorro</option>
+                  <option value="Primária">Primária</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 4 }}>Descrição (Opcional)</label>
+                <textarea value={novaDescricao} onChange={e => setNovaDescricao(e.target.value)} rows={3} style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14 }} />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 8 }}>
+                <button type="button" onClick={() => setIsModalOpen(false)} style={{ padding: '10px 16px', borderRadius: 6, border: '1px solid #cbd5e1', backgroundColor: 'white', color: '#475569', fontWeight: 600, cursor: 'pointer' }}>
+                  Cancelar
+                </button>
+                <button type="submit" disabled={isSubmitting} style={{ padding: '10px 16px', borderRadius: 6, border: 'none', backgroundColor: '#2563eb', color: 'white', fontWeight: 600, cursor: 'pointer' }}>
+                  {isSubmitting ? 'Salvando...' : 'Salvar Evento'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </DashLayout>
   );
 }
