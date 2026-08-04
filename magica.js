@@ -1,8 +1,21 @@
+const { Pool } = require('pg');
+const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
 
-const prisma = new PrismaClient();
+// Lendo o .env manualmente porque o Node puro não carrega sozinho como o Next.js
+let dbUrl = process.env.DATABASE_URL;
+const envPath = path.join(__dirname, '.env');
+if (!dbUrl && fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  const match = envContent.match(/DATABASE_URL="?([^"\n]+)"?/);
+  if (match) dbUrl = match[1];
+}
+
+const pool = new Pool({ connectionString: dbUrl });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function run() {
   console.log("Iniciando a Mágica das Recomendações e Idades...");
